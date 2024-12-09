@@ -74,3 +74,79 @@ def reboot_instance(ec2, instance_id):
         print(f"Successfully rebooted instance {instance_id}")
     except Exception as e:
         print(f"Error: {str(e)}")
+
+def terminate_instances(instance_id):
+    ec2 = boto3.client('ec2')
+    response = ec2.terminate_instances(InstanceIds=[instance_id])
+    print("Terminated instance:", response)
+
+def list_images(ec2):
+    print("Listing images....")
+    try:
+        response = ec2.describe_images(Owners=['self'])
+        for image in response['Images']:
+            print(f"[ImageID] {image['ImageId']}, [Name] {image['Name']}, [Owner] {image['OwnerId']}")
+    except Exception as e:
+        print(f"Error: {str(e)}")
+
+def available_regions():
+    ec2 = boto3.client('ec2')
+    try:
+        response = ec2.describe_regions()
+        print("Available Regions:")
+        for region in response['Regions']:
+            print(f"- {region['RegionName']}")
+    except Exception as e:
+        print(f"Error fetching regions: {e}")
+
+def instance_operations_menu(ec2):
+    while True:
+        print("\n------------------------------------------------------------")
+        print("                 Amazon AWS Control Panel                   ")
+        print("------------------------------------------------------------")
+        print("  1. list instance                2. available zones        ")
+        print("  3. start instance               4. available regions      ")
+        print("  5. stop instance                6. create instance        ")
+        print("  7. reboot instance              8. list images            ")
+        print("  9. terminate_instances                                    ")
+        print("                                 99. back to menu           ")
+        print("------------------------------------------------------------")
+
+        try:
+            number = int(input("Enter an integer: "))
+        except ValueError:
+            print("Invalid input!")
+            continue
+
+        if number == 99:
+            break
+        elif number == 1:
+            list_instances(ec2)
+        elif number == 2:
+            available_zones(ec2)
+        elif number == 3:
+            instance_id = input("Enter instance id: ").strip()
+            if instance_id:
+                start_instance(ec2, instance_id)
+        elif number == 4:
+                available_regions()
+        elif number == 5:
+            instance_id = input("Enter instance id: ").strip()
+            if instance_id:
+                stop_instance(ec2, instance_id)
+        elif number == 6:
+            ami_id = input("Enter AMI id: ").strip()
+            if ami_id:
+                create_instance(ec2, ami_id)
+        elif number == 7:
+            instance_id = input("Enter instance id: ").strip()
+            if instance_id:
+                reboot_instance(ec2, instance_id)
+        elif number == 8:
+            list_images(ec2)
+        elif number == 9:
+            instance_id = input("Enter instance id: ").strip()
+            if instance_id:
+                terminate_instances(instance_id)
+        else:
+            print("Invalid option!")
