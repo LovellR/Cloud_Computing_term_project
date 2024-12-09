@@ -60,7 +60,13 @@ def create_instance(ec2, ami_id):
             ImageId=ami_id,
             InstanceType='t2.micro',
             MinCount=1,
-            MaxCount=1
+            MaxCount=1,
+            SecurityGroupIds=['sg-0c91645aaba093440'],  # 지정된 Security Group ID
+            MetadataOptions={
+                'HttpTokens': 'required',  # IMDSv2를 강제 설정
+                'HttpPutResponseHopLimit': 1,  # 허용되는 홉 수 설정 (기본값: 1)
+                'HttpEndpoint': 'enabled'  # 메타데이터 서비스 활성화
+            }
         )
         instance_id = response['Instances'][0]['InstanceId']
         print(f"Successfully created instance {instance_id} with AMI {ami_id}")
