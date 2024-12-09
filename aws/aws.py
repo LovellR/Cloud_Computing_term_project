@@ -1,13 +1,24 @@
 from instance_operations import (
     init as init_ec2,
-    list_instances,
-    available_zones,
-    start_instance,
-    stop_instance,
-    create_instance,
-    reboot_instance,
+    instance_operations_menu
 )
-from SSM_operations import init_ssm, execute_condor_status
+
+from SSM_operations import (
+    init_ssm, 
+    SSM_operations_menu
+)
+
+from Storage_operations import (
+    storage_operations_menu
+)
+
+from Network_operations import (
+    network_operations_menu
+)
+
+from AMI_operations import (
+    AMI_operations_menu
+)
 
 if __name__ == "__main__":
     ec2 = init_ec2()
@@ -17,11 +28,10 @@ if __name__ == "__main__":
         print("\n------------------------------------------------------------")
         print("                 Amazon AWS Control Panel                   ")
         print("------------------------------------------------------------")
-        print("  1. list instance                2. available zones        ")
-        print("  3. start instance               4. available regions      ")
-        print("  5. stop instance                6. create instance        ")
-        print("  7. reboot instance              8. list images            ")
-        print("  9. condor_status               99. quit                   ")
+        print("  1. instance operations          2. SSM operations         ")
+        print("  3. AMI operations               4. storage operations     ")
+        print("  5. network operations                                     ")
+        print("                                 99. quit                   ")
         print("------------------------------------------------------------")
 
         try:
@@ -34,28 +44,14 @@ if __name__ == "__main__":
             print("bye!")
             break
         elif number == 1:
-            list_instances(ec2)
+            instance_operations_menu(ec2)
         elif number == 2:
-            available_zones(ec2)
+            SSM_operations_menu(ec2, ssm)
         elif number == 3:
-            instance_id = input("Enter instance id: ").strip()
-            if instance_id:
-                start_instance(ec2, instance_id)
+            AMI_operations_menu(ec2)
+        elif number == 4:
+            storage_operations_menu(ec2)
         elif number == 5:
-            instance_id = input("Enter instance id: ").strip()
-            if instance_id:
-                stop_instance(ec2, instance_id)
-        elif number == 6:
-            ami_id = input("Enter AMI id: ").strip()
-            if ami_id:
-                create_instance(ec2, ami_id)
-        elif number == 7:
-            instance_id = input("Enter instance id: ").strip()
-            if instance_id:
-                reboot_instance(ec2, instance_id)
-        elif number == 9:
-            instance_id = input("Enter instance ID: ").strip()
-            if instance_id:
-                execute_condor_status(ssm, instance_id)
+            network_operations_menu(ec2)
         else:
             print("Invalid option!")

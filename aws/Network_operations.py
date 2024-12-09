@@ -74,7 +74,7 @@ def describe_security_group_rules_with_ids(group_id):
         print("\nInbound Rules:")
         for idx, rule in enumerate(response['SecurityGroupRules'], start=1):
             if not rule['IsEgress']:
-                print(f"Rule {idx}: Rule ID={rule['SecurityGroupRuleId']}, "
+                print(f"Rule {idx}: Rule ID= {rule['SecurityGroupRuleId']}, "
                       f"Protocol= {rule.get('IpProtocol', 'ALL')}, "
                       f"Ports= {rule.get('FromPort', 'ALL')}-{rule.get('ToPort', 'ALL')}, "
                       f"CIDR= {rule.get('CidrIpv4', 'N/A')}")
@@ -83,7 +83,7 @@ def describe_security_group_rules_with_ids(group_id):
         print("\nOutbound Rules:")
         for idx, rule in enumerate(response['SecurityGroupRules'], start=1):
             if rule['IsEgress']:
-                print(f"Rule {idx}: Rule ID={rule['SecurityGroupRuleId']}, "
+                print(f"Rule {idx}: Rule ID= {rule['SecurityGroupRuleId']}, "
                       f"Protocol= {rule.get('IpProtocol', 'ALL')}, "
                       f"Ports= {rule.get('FromPort', 'ALL')}-{rule.get('ToPort', 'ALL')}, "
                       f"CIDR= {rule.get('CidrIpv4', 'N/A')}")
